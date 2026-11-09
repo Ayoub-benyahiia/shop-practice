@@ -9,51 +9,64 @@
 </head>
 
 <body>
-    <header>
-        <h1>Shop Practice</h1>
-
+    <header class=" flex flex-row justify-between items-center gap-4 p-4 text-center">
+        <div>
+            <h1 class="font-manrope font-bold text-4xl text-black mb-8 max-lg:text-center">Shop Practice</h1>
+        </div>
+        <div class="flex ">
+            <form id="form">
+                <input type="search" id="query" name="q" placeholder="Search" class="border bg-white border-gray-300 rounded-lg gap-2 p-2">
+                <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 ">Search</button>
+            </form>
+        </div>
     </header>
 
     <main>
-        <section>
-            <div>
-                <p>Product Catalog</p>
-            </div>
-            <div>
-                <form id="form">
-                    <input type="search" id="query" name="q" placeholder="Search">
-                    <button>Search</button>
-                </form>
+        <section class="flex flex-col items-center justify-between bg-blue-500 p-4 gap-4 ">
+                <div>
+                    <p
+                        class="font-semibold text-xl leading-8 text-black transition-all duration-500 group-hover:text-indigo-600">
+                        Product Catalog</p>
+                </div>
+        </section>
+
+        <section class="p-4 bg-gray-50">
+            <div class="bg-white border border-gray-200 rounded-xl p-4 grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+
+                <div>
+                    <label for="category"
+                        class="font-manrope font-bold text-sm text-black mb-8 max-lg:text-center">Categories</label>
+                    <select id="category"
+                        class="w-full border bg-white border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700">
+                        <option value="">Toutes</option>
+                        <option value="cat1">Cat 1</option>
+                        <option value="cat2">Cat 2</option>
+                        <option value="cat3">Cat 3</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="max-price"
+                        class="font-manrope font-bold text-sm text-black mb-8 max-lg:text-center">Maximum price</label>
+                    <input type="number" id="max-price" min="0" placeholder="Enter maximum price ..."
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700">
+                </div>
+
+                <div class="flex items-center justify-between gap-4">
+                    <label for="available-only" class="flex items-center gap-2 text-sm text-gray-700">
+                        <input type="checkbox" id="available-only"
+                            class="font-manrope font-bold text-sm text-black mb-8 max-lg:text-center">
+                        Available only
+                    </label>
+                    <button type="button" id="reset-filters"
+                        class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm rounded-lg px-3 py-2">
+                        Reset filters
+                    </button>
+                </div>
+
             </div>
         </section>
 
-        <section class="filter">
-            <p> Filter products</p>
-            <p>Categories</p>
-            <div class="filter-by-category">
-                <select>
-                    <option value="option1">Cat 1</option>
-                    <option value="option2">Cat 2</option>
-                    <option value="option3">Cat 3</option>
-                </select>
-            </div>
-            <p>Maximum price</p>
-            <div>
-                <form id="form">
-                    <input type="number" id="query" name="q" placeholder="Enter maximum price ...">
-                    <button>Search</button>
-                </form>
-            </div>
-
-            <div>
-                <p>Products available only</p>
-                <form id="form">
-                    <input type="checkbox" id="query" name="q" placeholder="Enter maximum price ...">
-                </form>
-            </div>
-
-            <button type="reset">Reset filters</button>
-        </section>
 
         <!-- Les produits seront affichés ici -->
         <section id="products-container" class="py-24">
