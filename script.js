@@ -9,6 +9,7 @@ const productsContainer = document.getElementById("products-container");
 const message = document.getElementById("message");
 const productGrid = document.getElementById("products-grid");
 
+const categoryFilter = document.getElementById("category");
 
 
 
@@ -31,7 +32,7 @@ async function getProducts() {
         const products = await response.json();
         // console.log(products);
         message.textContent = ""
-        setTimeout(()=> {displayProducts(products)},3000)
+        setTimeout(() => { displayProducts(products) }, 3000)
     }
     catch (error) {
         message.textContent = "Impossible de charger les produits. Veuillez réessayer."
@@ -92,3 +93,31 @@ function productSearch() {
     });
 };
 productSearch()
+
+async function getCategories() {
+    try {
+        const response = await fetch(urlcategory);
+        if (!response.ok) {
+            throw new Error("Error:" + response.status);
+        }
+        const Categories = await response.json();
+        message.textContent = ""
+        displayCategory(Categories)
+    }
+    catch (error) {
+        message.textContent = "Impossible de charger les category. Veuillez réessayer."
+        console.log(error.message)
+    };
+};
+
+function displayCategory(Categories) {
+    Categories.forEach(category => {
+        const option = document.createElement("option");
+        option.value = category.name;
+        option.textContent = category.name;
+        categoryFilter.appendChild(option);
+    });
+};
+
+getCategories()
+
