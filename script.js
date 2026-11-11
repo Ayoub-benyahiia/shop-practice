@@ -18,7 +18,7 @@ const productGrid = document.getElementById("products-grid");
 
 
 async function getProducts() {
-    message.textContent="Chargement des produits..."
+    message.textContent = "Chargement des produits..."
     try {
         const response = await fetch(urlproduct);
 
@@ -28,11 +28,11 @@ async function getProducts() {
 
         const products = await response.json();
         // console.log(products);
-        message.textContent=""
+        message.textContent = ""
         displayProducts(products)
     }
     catch (error) {
-        message.textContent="Impossible de charger les produits. Veuillez réessayer."
+        message.textContent = "Impossible de charger les produits. Veuillez réessayer."
         console.log(error.message)
     }
 
@@ -40,12 +40,12 @@ async function getProducts() {
 getProducts()
 
 function displayProducts(products) {
-
-    if(products.length === 0){
-        return message.textContent='Aucun produit disponible pour le moment.'
+    productGrid.innerHTML = ""
+    if (products.length === 0) {
+        return message.textContent = 'Aucun produit disponible pour le moment.'
     }
+
     products.forEach(product => {
-        console.log(product.name);
 
         const card = document.createElement("div");
 
