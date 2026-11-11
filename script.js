@@ -18,6 +18,7 @@ const productGrid = document.getElementById("products-grid");
 
 
 async function getProducts() {
+    message.textContent="Chargement des produits..."
     try {
         const response = await fetch(urlproduct);
 
@@ -27,9 +28,11 @@ async function getProducts() {
 
         const products = await response.json();
         // console.log(products);
+        message.textContent=""
         displayProducts(products)
     }
     catch (error) {
+        message.textContent="Impossible de charger les produits. Veuillez réessayer."
         console.log(error.message)
     }
 
@@ -37,8 +40,10 @@ async function getProducts() {
 getProducts()
 
 function displayProducts(products) {
-    // const products =  getProducts()
 
+    if(products.length === 0){
+        return message.textContent='Aucun produit disponible pour le moment.'
+    }
     products.forEach(product => {
         console.log(product.name);
 
