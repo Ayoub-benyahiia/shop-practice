@@ -3,6 +3,8 @@ const urlproduct = 'http://localhost:3000/api/products'
 const urlcategory = 'http://localhost:3000/api/categories'
 const urlreservation = 'http://localhost:3000/api/reservations'
 
+const searchInput = document.getElementById("search-input");
+
 const productsContainer = document.getElementById("products-container");
 const message = document.getElementById("message");
 const productGrid = document.getElementById("products-grid");
@@ -29,7 +31,7 @@ async function getProducts() {
         const products = await response.json();
         // console.log(products);
         message.textContent = ""
-        displayProducts(products)
+        setTimeout(()=> {displayProducts(products)},3000)
     }
     catch (error) {
         message.textContent = "Impossible de charger les produits. Veuillez réessayer."
@@ -72,3 +74,21 @@ function displayProducts(products) {
         productGrid.appendChild(card);
     });
 };
+
+
+function productSearch() {
+    searchInput.addEventListener("input", function () {
+        console.log(searchInput.value);
+        fetch(`${urlproduct}?search=${searchInput.value}`)
+            .then(response => response.json())
+            .then(products => {
+                if (products.length === 0) {
+                    productGrid.innerHTML = "<p>Aucun résultat trouvé.</p>";
+                }
+                else {
+                    displayProducts(products)
+                }
+            });
+    });
+};
+productSearch()
