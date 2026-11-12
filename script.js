@@ -11,7 +11,8 @@ const productGrid = document.getElementById("products-grid");
 
 const categoryFilter = document.getElementById("category");
 
-
+const maxPriceOfProducts = document.getElementById("max-price");
+const productinstock = document.getElementById("available-only");
 
 
 
@@ -117,7 +118,54 @@ function displayCategory(Categories) {
         option.textContent = category.name;
         categoryFilter.appendChild(option);
     });
+
 };
 
 getCategories()
 
+
+
+
+
+
+
+function filterProducts() {
+    maxPriceOfProducts.addEventListener("input", function () {
+        console.log(maxPriceOfProducts.value);
+        fetch(`${urlproduct}?maxPrice=${maxPriceOfProducts.value}`)
+            .then(response => response.json())
+            .then(products => {
+                if (products.length === 0) {
+                    productGrid.innerHTML = "<p>Aucun résultat trouvé.</p>";
+                }
+                else {
+                    displayProducts(products)
+                }
+            });
+    });
+};
+
+filterProducts()
+
+
+
+
+function availableProducts() {
+    productinstock.addEventListener("input", function () {
+        console.log(productinstock.checked);
+        fetch(`${urlproduct}?inStock=${productinstock.checked}`)
+            .then(response => response.json())
+            .then(products => {
+                if (products.length === 0) {
+                    productGrid.innerHTML = "<p>Aucun résultat trouvé.</p>";
+                }
+                else {
+                    displayProducts(products)
+                }
+            });
+    });
+};
+
+
+
+console.log("5" / "3")
