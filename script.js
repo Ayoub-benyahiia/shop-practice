@@ -14,6 +14,10 @@ const categoryFilter = document.getElementById("category");
 const maxPriceOfProducts = document.getElementById("max-price");
 const productinstock = document.getElementById("available-only");
 
+const resetFilters = document.getElementById("reset-filters");
+
+
+
 
 
 
@@ -191,4 +195,13 @@ function availableProducts() {
 availableProducts()
 
 
-
+function reset() {
+    resetFilters.addEventListener("click", function () {
+        searchInput.value = "";
+        categoryFilter.value = "";
+        maxPriceOfProducts.value = "";
+        productinstock.checked = false;
+        getProducts();
+    });
+}
+reset();
