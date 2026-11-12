@@ -114,7 +114,7 @@ async function getCategories() {
 function displayCategory(Categories) {
     Categories.forEach(category => {
         const option = document.createElement("option");
-        option.value = category.name;
+        option.value = category.id;
         option.textContent = category.name;
         categoryFilter.appendChild(option);
     });
@@ -123,6 +123,26 @@ function displayCategory(Categories) {
 
 getCategories()
 
+
+
+
+function afficherbycategory() {
+    categoryFilter.addEventListener("change", function () {
+        console.log(categoryFilter.value);
+        fetch(`${urlproduct}?categoryId=${categoryFilter.value}`)
+            .then(response => response.json())
+            .then(products => {
+                if (products.length === 0) {
+                    productGrid.innerHTML = "<p>Aucun résultat trouvé.</p>";
+                }
+                else {
+                    displayProducts(products)
+                }
+            });
+    })
+}
+
+afficherbycategory()
 
 
 
@@ -169,3 +189,6 @@ function availableProducts() {
 
 
 availableProducts()
+
+
+
