@@ -33,7 +33,7 @@ async function getProducts() {
         const products = await response.json();
         // console.log(products);
         message.textContent = ""
-        setTimeout(() => { displayProducts(products) }, 3000)
+        displayProducts(products)
     }
     catch (error) {
         message.textContent = "Impossible de charger les produits. Veuillez réessayer."
@@ -168,4 +168,4 @@ function availableProducts() {
 
 
 
-console.log("5" / "3")
+availableProducts()
