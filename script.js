@@ -45,7 +45,6 @@ async function getProducts() {
     }
 
 };
-getProducts()
 
 function displayProducts(products) {
     productGrid.innerHTML = ""
@@ -83,21 +82,17 @@ function displayProducts(products) {
 
 
 function productSearch() {
-    searchInput.addEventListener("input", function () {
-        console.log(searchInput.value);
-        fetch(`${urlproduct}?search=${searchInput.value}`)
-            .then(response => response.json())
-            .then(products => {
-                if (products.length === 0) {
-                    productGrid.innerHTML = "<p>Aucun résultat trouvé.</p>";
-                }
-                else {
-                    displayProducts(products)
-                }
-            });
-    });
+    fetch(`${urlproduct}?search=${searchInput.value}`)
+        .then(response => response.json())
+        .then(products => {
+            if (products.length === 0) {
+                productGrid.innerHTML = "<p>Aucun résultat trouvé.</p>";
+            }
+            else {
+                displayProducts(products)
+            }
+        });
 };
-productSearch()
 
 async function getCategories() {
     try {
@@ -125,58 +120,45 @@ function displayCategory(Categories) {
 
 };
 
-getCategories()
 
 
 
 
 function afficherbycategory() {
-    categoryFilter.addEventListener("change", function () {
-        console.log(categoryFilter.value);
-        fetch(`${urlproduct}?categoryId=${categoryFilter.value}`)
-            .then(response => response.json())
-            .then(products => {
-                if (products.length === 0) {
-                    productGrid.innerHTML = "<p>Aucun résultat trouvé.</p>";
-                }
-                else {
-                    displayProducts(products)
-                }
-            });
-    })
+    fetch(`${urlproduct}?categoryId=${categoryFilter.value}`)
+        .then(response => response.json())
+        .then(products => {
+            if (products.length === 0) {
+                productGrid.innerHTML = "<p>Aucun résultat trouvé.</p>";
+            }
+            else {
+                displayProducts(products)
+            }
+        });
 }
 
-afficherbycategory()
 
 
 
 
-
-
-function filterProducts() {
-    maxPriceOfProducts.addEventListener("input", function () {
-        console.log(maxPriceOfProducts.value);
-        fetch(`${urlproduct}?maxPrice=${maxPriceOfProducts.value}`)
-            .then(response => response.json())
-            .then(products => {
-                if (products.length === 0) {
-                    productGrid.innerHTML = "<p>Aucun résultat trouvé.</p>";
-                }
-                else {
-                    displayProducts(products)
-                }
-            });
-    });
+function filterProductsbyprice() {
+    fetch(`${urlproduct}?maxPrice=${maxPriceOfProducts.value}`)
+        .then(response => response.json())
+        .then(products => {
+            if (products.length === 0) {
+                productGrid.innerHTML = "<p>Aucun résultat trouvé.</p>";
+            }
+            else {
+                displayProducts(products)
+            }
+        });
 };
 
-filterProducts()
 
 
 
 
 function availableProducts() {
-    productinstock.addEventListener("input", function () {
-        console.log(productinstock.checked);
         fetch(`${urlproduct}?inStock=${productinstock.checked}`)
             .then(response => response.json())
             .then(products => {
@@ -187,21 +169,71 @@ function availableProducts() {
                     displayProducts(products)
                 }
             });
-    });
-};
+    };
 
 
-
-availableProducts()
 
 
 function reset() {
-    resetFilters.addEventListener("click", function () {
         searchInput.value = "";
         categoryFilter.value = "";
         maxPriceOfProducts.value = "";
         productinstock.checked = false;
         getProducts();
-    });
+    };
+
+function multifilters() {
+    const params = new URLSearchParams()
+
+    if (searchInput.value) {
+        params.append("search", searchInput.value)
+    }
+
+    if (categoryFilter.value) {
+        params.append("categoryId", categoryFilter.value)
+    }
+
+    if (maxPriceOfProducts.value) {
+        params.append("maxPrice", maxPriceOfProducts.value)
+    }
+
+    if (productinstock.checked) {
+        params.append("inStock", productinstock.checked)
+    }
+
+    console.log(params.toString())
+    fetch(`${urlproduct}?${params}`)
+        .then(response => response.json())
+        .then(products => {
+            if (products.length === 0) {
+                productGrid.innerHTML = "<p>Aucun résultat trouvé.</p>";
+            }
+            else {
+                displayProducts(products)
+            }
+        })
 }
-reset();
+
+function events() {
+    searchInput.addEventListener("input", function () {
+        productSearch()
+    })
+
+    categoryFilter.addEventListener("change", function () {
+        afficherbycategory()
+    })
+
+    maxPriceOfProducts.addEventListener("input", function () {
+        filterProductsbyprice()
+    })
+
+    productinstock.addEventListener("input", function () {
+        availableProducts()
+    })
+
+    resetFilters.addEventListener("click", function () {
+        reset()
+    })
+
+}
+
