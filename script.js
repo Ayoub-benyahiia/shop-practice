@@ -18,6 +18,8 @@ const resetFilters = document.getElementById("reset-filters");
 
 
 
+let panier = [];
+
 
 
 
@@ -75,6 +77,20 @@ function displayProducts(products) {
                        </div>
                    </a>
 `;
+        const addButton = document.createElement("button");
+        addButton.textContent = "Ajouter au panier";
+        addButton.className = "mt-3 w-full bg-indigo-600 text-white py-2 rounded-lg";
+
+        if (product.stock === 0) {
+            addButton.disabled = true;
+            addButton.textContent = "Rupture de stock";
+        }
+
+        addButton.addEventListener("click", function () {
+            addToCart(product);
+        });
+
+        card.appendChild(addButton);
 
         productGrid.appendChild(card);
     });
@@ -123,7 +139,6 @@ function displayCategory(Categories) {
 
 
 
-
 function afficherbycategory() {
     fetch(`${urlproduct}?categoryId=${categoryFilter.value}`)
         .then(response => response.json())
@@ -141,7 +156,7 @@ function afficherbycategory() {
 
 
 
-function filterProductsbyprice() {
+function filterProductsbyPrice() {
     fetch(`${urlproduct}?maxPrice=${maxPriceOfProducts.value}`)
         .then(response => response.json())
         .then(products => {
@@ -159,28 +174,28 @@ function filterProductsbyprice() {
 
 
 function availableProducts() {
-        fetch(`${urlproduct}?inStock=${productinstock.checked}`)
-            .then(response => response.json())
-            .then(products => {
-                if (products.length === 0) {
-                    productGrid.innerHTML = "<p>Aucun résultat trouvé.</p>";
-                }
-                else {
-                    displayProducts(products)
-                }
-            });
-    };
+    fetch(`${urlproduct}?inStock=${productinstock.checked}`)
+        .then(response => response.json())
+        .then(products => {
+            if (products.length === 0) {
+                productGrid.innerHTML = "<p>Aucun résultat trouvé.</p>";
+            }
+            else {
+                displayProducts(products)
+            }
+        });
+};
 
 
 
 
 function reset() {
-        searchInput.value = "";
-        categoryFilter.value = "";
-        maxPriceOfProducts.value = "";
-        productinstock.checked = false;
-        getProducts();
-    };
+    searchInput.value = "";
+    categoryFilter.value = "";
+    maxPriceOfProducts.value = "";
+    productinstock.checked = false;
+    getProducts();
+};
 
 function multifilters() {
     const params = new URLSearchParams()
@@ -201,7 +216,6 @@ function multifilters() {
         params.append("inStock", productinstock.checked)
     }
 
-    console.log(params.toString())
     fetch(`${urlproduct}?${params}`)
         .then(response => response.json())
         .then(products => {
@@ -224,7 +238,7 @@ function events() {
     })
 
     maxPriceOfProducts.addEventListener("input", function () {
-        filterProductsbyprice()
+        filterProductsbyPrice()
     })
 
     productinstock.addEventListener("input", function () {
@@ -235,5 +249,44 @@ function events() {
         reset()
     })
 
+    const inputs = [searchInput, categoryFilter, maxPriceOfProducts, productinstock]
+    inputs.forEach(x => {
+        x.addEventListener("input", function () {
+            multifilters()
+        })
+    });
 }
+events()
+getProducts()
+getCategories()
 
+
+
+
+function addToCart(product) {
+    if (product.stock === 0) {
+        message.textContent = "Produit en rupture de stock.";
+        return;
+    }
+
+    const existing = panier.find(item => item.id === product.id);
+
+    if (existing) {
+        if (existing.quantity < existing.stock) {
+            existing.quantity = existing.quantity + 1;
+        } else {
+            message.textContent = "Stock maximum atteint.";
+        }
+    } else {
+        panier.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            image: product.image,
+            stock: product.stock,
+            quantity: 1
+        });
+    }
+
+    console.log(panier);
+}

@@ -21,5 +21,6 @@ Provides strong contracts through technologies such as WSDL.
 Suitable for enterprise systems with strict requirements.
 ******************************************************************************************************************
 GraphQl
-
 gRPC
+******************************************************************
+
