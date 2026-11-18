@@ -287,6 +287,4 @@ function addToCart(product) {
             quantity: 1
         });
     }
-
-    console.log(panier);
 }
