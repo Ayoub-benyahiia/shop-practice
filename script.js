@@ -287,4 +287,42 @@ function addToCart(product) {
             quantity: 1
         });
     }
+    console.log(panier);
+
 }
+
+
+
+function renderCart() {
+    const cartBody = document.getElementById("cart-body");
+    cartBody.innerHTML = "";
+
+    if (panier.length === 0) {
+        cartBody.textContent = "Votre panier est vide.";
+        return;
+    }
+
+    panier.forEach(item => {
+        const row = document.createElement("tr");
+
+        const nameCell = document.createElement("td");
+        nameCell.textContent = item.name;
+
+        const priceCell = document.createElement("td");
+        priceCell.textContent = item.price;
+
+        const quantityCell = document.createElement("td");
+        quantityCell.textContent = item.quantity;
+
+        const totalCell = document.createElement("td");
+        totalCell.textContent = item.price * item.quantity;
+
+        row.appendChild(nameCell);
+        row.appendChild(priceCell);
+        row.appendChild(quantityCell);
+        row.appendChild(totalCell);
+
+        cartBody.appendChild(row);
+    });
+}
+renderCart()
